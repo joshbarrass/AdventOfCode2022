@@ -5,8 +5,8 @@ testInput = "A Y\n\
 \B X\n\
 \C Z"
 
-parseInput :: String -> [(Option, Option)]
-parseInput xs = [(parseOption $ head l, parseOption $ head (drop 2 l)) | l <- lines xs]
+parseInput :: String -> [(Option, WinState)]
+parseInput xs = [(parseOption $ head l, parseWinState $ head (drop 2 l)) | l <- lines xs]
 
 main :: IO ()
 main = do
