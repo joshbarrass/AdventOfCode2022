@@ -2,6 +2,7 @@ module Rucksack
   ( Rucksack(..)
   , findDuplicate
   , getItemPriority
+  , findAllBadges
   ) where
 
 data Rucksack = Rucksack { inventory :: [Char] } deriving Show
@@ -18,6 +19,13 @@ findSharedInLists (x:xs) ys
   | x `elem` ys = Just x
   | otherwise = findSharedInLists xs ys
 
+findAllSharedInLists :: (Eq a) => [a] -> [a] -> [a]
+findAllSharedInLists _ [] = []
+findAllSharedInLists [] _ = []
+findAllSharedInLists (x:xs) ys
+  | x `elem` ys = x : findAllSharedInLists xs ys
+  | otherwise = findAllSharedInLists xs ys
+
 findDuplicate :: Rucksack -> Char
 findDuplicate = (maybe ' ' id) . uncurry findSharedInLists . compartments
 
@@ -29,3 +37,11 @@ itemPriority (kv:kvs) x
 
 getItemPriority :: Char -> Int
 getItemPriority = (maybe 0 id) . itemPriority (zip (['a'..'z']++['A'..'Z']) [1..])
+
+findBadge :: Rucksack -> Rucksack -> Rucksack -> Char
+findBadge (Rucksack rs) (Rucksack ss) (Rucksack ts) = (maybe ' ' id) $ findSharedInLists firstTwoShared ts
+  where firstTwoShared = findAllSharedInLists rs ss
+
+findAllBadges :: [Rucksack] -> [Char]
+findAllBadges [] = []
+findAllBadges (rs:ss:ts:rss) = findBadge rs ss ts : findAllBadges rss

@@ -10,7 +10,7 @@ main = do
   let filename = head args
   input <- readFile filename
   let rucksacks = parseInput input
-  let duplicates = map findDuplicate rucksacks
+  let duplicates = findAllBadges rucksacks
   let priorities = map getItemPriority duplicates
   let s = sum priorities
   putStrLn $ "Total of duplicates: " ++ show s
