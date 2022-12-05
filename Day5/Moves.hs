@@ -35,6 +35,24 @@ popNOnto :: Int -> (Stack a, Stack a) -> (Stack a, Stack a)
 popNOnto 0 ss = ss
 popNOnto n ss = popNOnto (n-1) $ popOnto ss
 
+-- pop N items from the stack and return the new stack and a list
+popN :: Int -> Stack a -> (Stack a, [a])
+popN 0 s = (s, [])
+popN n s = (s'', i:is)
+  where Just (s', i) = stackPop s
+        (s'', is) = popN (n-1) s'
+
+-- push all items onto a stack
+pushAll :: [a] -> Stack a -> Stack a
+pushAll [] s = s
+pushAll (x:xs) s = pushAll xs $ stackPush s x
+
+-- move N items from one stack onto the other, preserving order
+moveN :: Int -> (Stack a, Stack a) -> (Stack a, Stack a)
+moveN n (s, t) = (s', t')
+  where (s', is) = popN n s
+        t' = pushAll (reverse is) t
+
 replace :: Int -> a -> [a] -> [a]
 replace n x' xs = take n xs ++ x' : drop (n+1) xs
 
@@ -42,7 +60,7 @@ executeMove :: [Stack Char] -> Move -> [Stack Char]
 executeMove xs m = let
   s = xs !! si
   d = xs !! di
-  (s', d') = popNOnto (count m) (s, d)
+  (s', d') = moveN (count m) (s, d)
   in replace di d' (replace si s' xs)
   where si = src m - 1
         di = dst m - 1
