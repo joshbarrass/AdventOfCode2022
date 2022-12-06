@@ -1,11 +1,18 @@
 import System.Environment
 import Data.List
 
--- returns the offset to the packet start
+-- returns the offset to the end of the first packet containing only
+-- unique characters
+findUniquePacket :: Int -> String -> Int
+findUniquePacket len xs
+  | (length $ nub (take len xs)) == len = len
+  | otherwise = 1 + findUniquePacket len (tail xs)
+
 findPacketStart :: String -> Int
-findPacketStart (a:b:c:d:e:f:g:h:i:j:k:l:m:n:xs)
-  | length (nub [a,b,c,d,e,f,g,h,i,j,k,l,m,n]) == 14 = 14
-  | otherwise = 1 + findPacketStart (b:c:d:e:f:g:h:i:j:k:l:m:n:xs)
+findPacketStart = findUniquePacket 4
+
+findMessageStart :: String -> Int
+findMessageStart = findUniquePacket 14
 
 main :: IO()
 main = do
@@ -14,3 +21,5 @@ main = do
   input <- readFile filename
   let start = findPacketStart input
   putStrLn $ "Offset to packet start: " ++ show start
+  let msg = findMessageStart input
+  putStrLn $ "Offset to message start: " ++ show msg
