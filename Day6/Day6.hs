@@ -3,9 +3,9 @@ import Data.List
 
 -- returns the offset to the packet start
 findPacketStart :: String -> Int
-findPacketStart (a:b:c:d:xs)
-  | length (nub [a,b,c,d]) == 4 = 4
-  | otherwise = 1 + findPacketStart (b:c:d:xs)
+findPacketStart (a:b:c:d:e:f:g:h:i:j:k:l:m:n:xs)
+  | length (nub [a,b,c,d,e,f,g,h,i,j,k,l,m,n]) == 14 = 14
+  | otherwise = 1 + findPacketStart (b:c:d:e:f:g:h:i:j:k:l:m:n:xs)
 
 main :: IO()
 main = do
