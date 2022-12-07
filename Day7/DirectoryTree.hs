@@ -5,6 +5,7 @@ module DirectoryTree
   , cd
   , updateCWD
   , getCWD
+  , getSize
   , getAllNodeSizes
   , isDir
   ) where
