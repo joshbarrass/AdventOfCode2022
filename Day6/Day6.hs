@@ -1,7 +1,7 @@
 import System.Environment
 import Data.List
 
--- returns the offset to the end of the first packet containing only
+-- returns the offset to the *end* of the first packet containing only
 -- unique characters
 findUniquePacket :: Int -> String -> Int
 findUniquePacket len xs
