@@ -31,6 +31,6 @@ main = do
   let filename = head args
   input <- readFile filename
   let pairs = parseInput input
-  let subsets = filter (uncurry eitherIsSubset) pairs
-  let numSubsets = length subsets
-  putStrLn $ "Number of fully contained ranges: " ++ (show numSubsets)
+  let overlaps = filter (uncurry overlap) pairs
+  let numOverlaps = length overlaps
+  putStrLn $ "Number of overlapping ranges: " ++ (show numOverlaps)
