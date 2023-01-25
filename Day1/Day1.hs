@@ -1,5 +1,6 @@
 import Elf
 import System.Environment
+import Data.List
 
 testInventory :: String
 testInventory = "1000\n\
@@ -42,5 +43,6 @@ main = do
   let filename = head args
   input <- readFile filename
   let elves = parseInput input
-  let max = maximum $ map totalCalories elves
-  putStrLn $ "Highest calories: " ++ (show max)
+  let sortedTotals = sortBy (flip compare) $ map totalCalories elves
+  let totalTopThree = sum (take 3 sortedTotals)
+  putStrLn $ "Total of top three calories: " ++ (show totalTopThree)
